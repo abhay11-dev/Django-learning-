@@ -1,0 +1,23 @@
+<h1>{% if task %}Edit{% else %}Create{% endif %} Task</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Title"
+           value="{{ task.title|default:'' }}">
+    <br><br>
+    <textarea name="description" placeholder="Description">{{ task.description|default:'' }}</textarea>
+    <br><br>
+
+    {% if task %}
+        <label>
+            <input type="checkbox" name="completed"
+                {% if task.completed %}checked{% endif %}>
+            Completed
+        </label>
+    {% endif %}
+
+    <br><br>
+    <button type="submit">Save</button>
+</form>
+
+<a href="{% url 'task_list' %}">Back</a>

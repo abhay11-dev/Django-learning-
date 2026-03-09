@@ -1,0 +1,24 @@
+{
+  "title": "User Registration",
+  "fields": [
+    {
+      "type": "text",
+      "name": "firstName",
+      "label": "First Name of user",
+      "required": true
+    },
+    {
+      "type": "text",
+      "name": "email",
+      "label": "Email",
+      "required": true
+    },
+    {
+      "type": "select",
+      "name": "role",
+      "label": "Role",
+      "required": true,
+      "options": ["Admin", "User"]
+    }
+  ]
+}
