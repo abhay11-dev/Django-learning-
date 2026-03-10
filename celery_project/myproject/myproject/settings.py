@@ -126,3 +126,16 @@ CELERY_RESULT_BACKEND = "django-db"
 CELERY_TIMEZONE = "Asia/Kolkata"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+
+
+#Celery beat
+# CELERY_BEAT_SCHEDULE = {
+#     'clear-session-cache-every-10-seconds': {
+#         'task': 'app.tasks.clear_session_cache',
+#         'schedule': 10.0,
+#         'args': (1111,)
+#     },
+
+    #Add more tasks if needed here
+# }
