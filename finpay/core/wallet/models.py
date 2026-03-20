@@ -31,3 +31,5 @@ class Wallet(models.Model):
         ).aggregate(total=Sum("amount"))["total"] or 0
 
         return credits - debits
+
+
