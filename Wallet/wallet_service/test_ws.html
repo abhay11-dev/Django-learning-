@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+
+    <script>
+        const socket = new WebSocket("ws://127.0.0.1:8000/ws/wallet/3/");
+
+        socket.onopen = () => console.log("✅ Connected");
+
+        socket.onmessage = (event) => {
+            console.log("📩 Message:", event.data);
+        };
+
+        socket.onerror = (err) => {
+            console.log("❌ Error:", err);
+        };
+
+        socket.onclose = () => console.log("🔌 Closed");
+    </script>
+</body>
+</html>
