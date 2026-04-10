@@ -1,7 +1,7 @@
 from celery import shared_task
 from django.db import transaction as db_transaction
 from django.db.models import Sum, F, Case, When, DecimalField
-from apps.transactions.models import Transaction, DeadLetterTransaction
+from apps.transactions.models import NotificationStatus, Transaction, DeadLetterTransaction
 from apps.wallets.models import Wallet
 from apps.ledger.models import LedgerEntry
 import logging
@@ -149,3 +149,32 @@ def enqueue_pending_transactions():
         process_transfer.delay(txn.id)
 
     return f"{pending_txns.count()} transactions enqueued"
+
+
+@shared_task
+def send_notification(txn_id):
+    try:
+        websocket_send(txn_id)
+
+        NotificationStatus.objects.update_or_create(
+            transaction_id=txn_id,
+            defaults={"is_delivered": True}
+        )
+
+    except Exception as e:
+        NotificationStatus.objects.update_or_create(
+            transaction_id=txn_id,
+            defaults={
+                "is_delivered": False,
+                "retry_count": F("retry_count") + 1
+            }
+        )
+
+def retry_notifications():
+    failed = NotificationStatus.objects.filter(
+        is_delivered=False,
+        retry_count__lt=5
+    )
+
+    for item in failed:
+        send_notification(item.transaction_id)

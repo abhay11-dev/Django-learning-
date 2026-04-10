@@ -52,3 +52,10 @@ class DeadLetterTransaction(models.Model): #DLT is for system failures not busin
     error_message = models.TextField()
     failed_at = models.DateTimeField(auto_now_add=True)
     retry_count = models.IntegerField(default=0)
+
+
+class NotificationStatus(models.Model):
+    transaction = models.OneToOneField("transactions.Transaction", on_delete=models.CASCADE)
+    is_delivered = models.BooleanField(default=False)
+    retry_count = models.IntegerField(default=0)
+    last_attempt = models.DateTimeField(null=True)
